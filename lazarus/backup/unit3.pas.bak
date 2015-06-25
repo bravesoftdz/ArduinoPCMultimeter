@@ -1,0 +1,38 @@
+unit Unit3;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls;
+
+type
+
+  { Toptionen }
+
+  Toptionen = class(TForm)
+    Serialparameter: TLabeledEdit;
+    procedure FormCreate(Sender: TObject);
+  private
+    { private declarations }
+  public
+    { public declarations }
+  end;
+
+var
+  optionen: Toptionen;
+
+implementation
+
+{$R *.lfm}
+
+{ Toptionen }
+
+procedure Toptionen.FormCreate(Sender: TObject);
+begin
+
+end;
+
+end.
+

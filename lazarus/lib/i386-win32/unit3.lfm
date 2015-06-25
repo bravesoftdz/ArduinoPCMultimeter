@@ -1,0 +1,28 @@
+object optionen: Toptionen
+  Left = 411
+  Height = 240
+  Top = 213
+  Width = 320
+  Caption = 'Optionen'
+  ClientHeight = 240
+  ClientWidth = 320
+  LCLVersion = '1.0.14.0'
+  object Serialparameter: TLabeledEdit
+    Left = 8
+    Height = 23
+    Top = 24
+    Width = 184
+    EditLabel.AnchorSideLeft.Control = Serialparameter
+    EditLabel.AnchorSideRight.Control = Serialparameter
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = Serialparameter
+    EditLabel.Left = 8
+    EditLabel.Height = 16
+    EditLabel.Top = 5
+    EditLabel.Width = 184
+    EditLabel.Caption = 'Serialleverbindungsparameter'
+    EditLabel.ParentColor = False
+    TabOrder = 0
+    Text = 'COM23:115200,N,8,1'
+  end
+end
