@@ -5,6 +5,7 @@ byte modebyte=0;
 byte eingang = 0;
 byte pin = 3;
 int wert=1;
+byte array[256];
 void setup() {
   Serial.begin(115200);
 }
@@ -51,6 +52,18 @@ void loop() {
       wert = Serial.read();
       analogWrite(pin,wert);
       //Serial.print('4');
+    } else if (modebyte== 79) { //oszilloskop (O ascii = 79)
+       while (Serial.available() < 3) {}
+       int messPin = Serial.read();
+       int delaytemp = Serial.read();
+       long delaymicro = delaytemp * delaytemp;
+       for (int i = 0;i<256;i++) {
+         array[i] = int(analogRead(messPin) /4);
+         delayMicroseconds(delaymicro);
+       }
+       for (int i = 0;i<256;i++) {
+         Serial.write(array[i]);
+       }
     }
   }
 }

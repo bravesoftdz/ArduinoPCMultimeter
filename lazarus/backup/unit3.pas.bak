@@ -13,7 +13,6 @@ type
 
   Toptionen = class(TForm)
     Serialparameter: TLabeledEdit;
-    procedure FormCreate(Sender: TObject);
   private
     { private declarations }
   public
@@ -26,13 +25,6 @@ var
 implementation
 
 {$R *.lfm}
-
-{ Toptionen }
-
-procedure Toptionen.FormCreate(Sender: TObject);
-begin
-
-end;
 
 end.
 

@@ -23,6 +23,6 @@ object optionen: Toptionen
     EditLabel.Caption = 'Serialleverbindungsparameter'
     EditLabel.ParentColor = False
     TabOrder = 0
-    Text = 'COM3:115200,N,8,1'
+    Text = 'COM23:115200,N,8,1'
   end
 end

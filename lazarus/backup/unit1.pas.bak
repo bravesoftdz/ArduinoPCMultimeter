@@ -14,14 +14,17 @@ type
 
   TForm1 = class(TForm)
     Button1: TButton;
+    Button2: TButton;
     CheckBox1: TCheckBox;
     CheckBox2: TCheckBox;
     ComboBox1: TComboBox;
     ComboBox2: TComboBox;
+    ComboBox3: TComboBox;
     Edit1: TEdit;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
+    Label4: TLabel;
     MainMenu1: TMainMenu;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
@@ -29,12 +32,19 @@ type
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
     MenuItem6: TMenuItem;
+    PageControl1: TPageControl;
     PaintBox1: TPaintBox;
+    PaintBox2: TPaintBox;
     ScrollBar1: TScrollBar;
+    ScrollBar2: TScrollBar;
     SpinEdit1: TSpinEdit;
     StatusBar1: TStatusBar;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    TabSheet3: TTabSheet;
     Timer1: TTimer;
     procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
     procedure CheckBox1Change(Sender: TObject);
     procedure ComboBox2Change(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
@@ -42,9 +52,11 @@ type
     procedure MenuItem5Click(Sender: TObject);
     procedure MenuItem6Click(Sender: TObject);
     procedure ScrollBar1Change(Sender: TObject);
+    procedure ScrollBar2Change(Sender: TObject);
     procedure SpinEdit1Change(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure kreisanzeige(r,x,y,grad: integer);
+
   private
     { private declarations }
   public
@@ -69,9 +81,9 @@ begin
     ShowMessage('Konnte keine verbindung mit den Parametern: ' + optionen.Serialparameter.Text + ' aufbauen');
     exit;
   end;
-  for i:= 0 to 10 do
+
   SENDBYTE(5);
-  //SENDBYTE(5);
+  SENDBYTE(5);
   DELAY(500);
   if INBUFFER>0 then
   begin
@@ -116,6 +128,58 @@ begin
   timer1.Enabled:=true;
 end;
 
+procedure TForm1.Button2Click(Sender: TObject);
+var timeron:boolean;
+  delaytime:integer;
+  werte:array[0..256] of byte;
+  i:integer;
+begin
+  StatusBar1.Panels.Items[0].Text:='';
+  timeron := Timer1.Enabled;
+  Timer1.Enabled:=false;
+  BUFFERSIZE(300);
+  SENDBYTE(79);
+  SENDBYTE(ComboBox3.ItemIndex);
+  SENDBYTE(ScrollBar2.Position);
+  delaytime := round(ScrollBar2.Position*ScrollBar2.Position*256/1000 +100);
+   TIMEINIT();
+   i:=0;
+   while (i<256) AND (TIMEREAD<delaytime) do
+   begin
+      if (INBUFFER()>0) then
+      begin
+
+           werte[i] := READBYTE();
+           i += 1;
+      end;
+   end;
+   //ShowMessage(IntToStr(i));
+   if i<256 then
+   begin
+     READSTRING ;
+     StatusBar1.Panels.Items[0].Text:='Fehler';
+     exit;
+
+   end;
+   PaintBox2.Refresh;
+
+   PaintBox2.Canvas.MoveTo(0,(werte[0]-256)*-1);
+   for i :=0 to 255 do
+   begin
+      PaintBox2.Canvas.LineTo(i,(werte[i]-256)*-1);
+
+   end;
+   {repeat until (INBUFFER() = 256) or (TIMEREAD>delaytime);
+   if INBUFFER()  <> 256 then
+   begin
+     ShowMessage(inttostr(INBUFFER()));
+     READSTRING ;
+     StatusBar1.Panels.Items[0].Text:='Fehler';
+     exit;
+   end;}
+
+end;
+
 procedure TForm1.ComboBox2Change(Sender: TObject);
 begin
   ScrollBar1.Position:=pwm[ComboBox2.ItemIndex];
@@ -144,6 +208,11 @@ procedure TForm1.ScrollBar1Change(Sender: TObject);
 begin
   Button1.Caption:='Setzten ' + inttostr(round(ScrollBar1.Position / 255 * 100)) + '%';
   //Button1Click(Sender);
+end;
+
+procedure TForm1.ScrollBar2Change(Sender: TObject);
+begin
+  Label4.Caption:=IntToStr(ScrollBar2.Position * ScrollBar2.Position) + ' µs';
 end;
 
 procedure TForm1.SpinEdit1Change(Sender: TObject);
@@ -198,6 +267,8 @@ begin
 
 
 end;
+
+
 
 end.
 
